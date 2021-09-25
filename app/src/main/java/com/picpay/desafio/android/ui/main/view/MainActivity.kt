@@ -15,6 +15,7 @@ import com.picpay.desafio.android.app.print
 import com.picpay.desafio.android.app.visible
 import com.picpay.desafio.android.ui.main.view.adapter.UserListAdapter
 import com.picpay.desafio.android.ui.main.viewmodel.MainViewModel
+import com.picpay.desafio.android.util.Resource
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
@@ -32,9 +33,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         progressBar = findViewById(R.id.user_list_progress_bar)
         userAdapter = UserListAdapter()
 
-        setLoadingView()
         setupRecyclerView()
         setupObservers()
+        setLoadingView()
     }
 
     private fun setupRecyclerView() {
@@ -45,22 +46,24 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun setLoadingView(isLoading: Boolean = true) {
-        recyclerView.gone()
+        recyclerView.isVisible = !isLoading
         progressBar.isVisible = isLoading
     }
 
     private fun setupObservers() {
         Log.d("Viewmodel", vm.toString())
 
-        vm.state.observe(this) {
-            setLoadingView(it.isLoading)
-            it.users?.let { users ->
+        vm.users.observe(this){ result ->
+
+            result.data?.let { users ->
                 userAdapter.users = users
                 setListViewState()
             }
-            it.error?.let {
+            if (result is Resource.Error && result.data.isNullOrEmpty()){
                 setErrorState()
             }
+            val isLoading = result is Resource.Loading && result.data.isNullOrEmpty()
+            setLoadingView(isLoading)
         }
     }
 

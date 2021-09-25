@@ -72,7 +72,7 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
 
-    implementation 'com.google.code.gson:gson:2.8.6'
+    implementation 'com.google.code.gson:gson:2.8.8'
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
@@ -92,4 +92,12 @@ dependencies {
     androidTestImplementation "androidx.test:runner:$test_runner_version"
     androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
     androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"
+
+    //Utilizando o Room
+    implementation "androidx.room:room-runtime:$room_version"
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
+    // Kotlin Extensions and Coroutines (optional)
+    implementation "androidx.room:room-ktx:$room_version"
+
 }
